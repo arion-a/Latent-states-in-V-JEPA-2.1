@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Mathematical Analysis Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --bg-panel: #ffffff;
+    --text: #1c1a16;
+    --text-dim: #55503f;
+    --accent: #a5581e;
+    --accent-soft: #f4e6d8;
+    --border: #e3ddd0;
+    --eq-bg: #f6f1e7;
+    --code-bg: #f0ece1;
+    --warn-bg: #fdeee8;
+    --warn-border: #d97a4a;
+    --status-bg: #efe6d3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16140f;
+      --bg-panel: #1e1b15;
+      --text: #f1ede2;
+      --text-dim: #b8b09a;
+      --accent: #e0a468;
+      --accent-soft: #3a2c1c;
+      --border: #3a3427;
+      --eq-bg: #241f17;
+      --code-bg: #221e16;
+      --warn-bg: #2e2015;
+      --warn-border: #b8703c;
+      --status-bg: #2c2618;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16140f;
+    --bg-panel: #1e1b15;
+    --text: #f1ede2;
+    --text-dim: #b8b09a;
+    --accent: #e0a468;
+    --accent-soft: #3a2c1c;
+    --border: #3a3427;
+    --eq-bg: #241f17;
+    --code-bg: #221e16;
+    --warn-bg: #2e2015;
+    --warn-border: #b8703c;
+    --status-bg: #2c2618;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Literata', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.75;
+    margin: 0;
+    padding: 0 20px 100px;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  header {
+    padding-top: 56px;
+    padding-bottom: 28px;
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: 40px;
+  }
+
+  .kicker {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0 0 18px;
+  }
+
+  .status-line {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    background: var(--status-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+  }
+
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 56px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    scroll-margin-top: 20px;
+  }
+
+  h2 .num {
+    color: var(--accent);
+    margin-right: 10px;
+  }
+
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 36px 0 14px;
+  }
+
+  p { margin: 0 0 20px; }
+
+  strong { font-weight: 700; }
+
+  .lede {
+    font-size: 22px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .eq-block {
+    background: var(--eq-bg);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin: 24px 0;
+    overflow-x: auto;
+    font-size: 22px;
+  }
+
+  .eq-block.small { font-size: 19px; }
+
+  .eq-row { margin: 6px 0; }
+  .eq-row:only-child { margin: 0; }
+
+  .eq-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .katex { font-size: 1.15em; }
+  .eq-block.small .katex { font-size: 1.05em; }
+
+  .note {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--text-dim);
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 20px 0;
+    line-height: 1.6;
+  }
+
+  .warn {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    line-height: 1.65;
+  }
+  .warn .warn-title {
+    font-weight: 700;
+    color: var(--warn-border);
+    display: block;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+
+  .hyp-box {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .hyp-box .hyp-tag {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .check-box {
+    background: var(--code-bg);
+    border: 1px dashed var(--text-dim);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .check-box .check-tag {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .check-box ul { margin: 8px 0 0; padding-left: 22px; }
+  .check-box li { margin-bottom: 6px; }
+
+  code {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    background: var(--code-bg);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.85em;
+  }
+
+  ul, ol { padding-left: 28px; margin: 0 0 20px; }
+  li { margin-bottom: 8px; }
+
+  .toc {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-top: 32px;
+    font-family: 'Inter', sans-serif;
+  }
+  .toc-title {
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  .toc ol { margin: 0; padding-left: 22px; }
+  .toc a { color: var(--text); text-decoration: none; font-size: 17px; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .toc li { margin-bottom: 8px; }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    margin: 20px 0;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    text-align: left;
+  }
+  th {
+    background: var(--accent-soft);
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 600px) {
+    body { font-size: 18px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 23px; }
+    .eq-block { font-size: 18px; padding: 18px; }
+    .eq-block.small { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" type="button">Toggle theme</button>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Minimal Gravity Latent Experiment &middot; Merges Documents 1 &amp; 2</div>
+  <h1>Hypotheses, Calculations &amp; Result Checks</h1>
+  <span class="status-line">Review draft — formulas only. No results have been computed.</span>
+</header>
+
+<p class="lede" style="font-size:17px; font-family:'Inter',sans-serif; color:var(--text-dim);">Every hypothesis (from Document&nbsp;1, the experiment design), its exact calculation (from Document&nbsp;2, the math plan) and the rule for checking whether the result supports it now live together, hypothesis by hypothesis, instead of split across files.</p>
+
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#defs">Definitions, dimensions &amp; scene assignment</a></li>
+    <li><a href="#h1">H1 — Gravity&ndash;gravity alignment</a></li>
+    <li><a href="#h2">H2 — Gravity&ndash;color comparison</a></li>
+    <li><a href="#h3">H3 — 30-train / 10-test transport</a></li>
+    <li><a href="#scope">Combined claim &amp; statistical scope</a></li>
+    <li><a href="#outputs">Expected outputs and plots</a></li>
+    <li><a href="#integrity">Integrity checks</a></li>
+    <li><a href="#appendix">Appendix — stimulus-generation equations</a></li>
+  </ol>
+</nav>
+
+<h2 id="defs"><span class="num">1</span>Definitions, dimensions &amp; scene assignment</h2>
+
+<p>Let <span class="eqi">$S = \{0,\dots,39\}$</span>, <span class="eqi">$Q \subset S$</span> the 20 color-control scene IDs, <span class="eqi">$T \subset S$</span> the 30 training IDs, and <span class="eqi">$U = S \setminus T$</span> the 10 test IDs. All sets are fixed before rendering or inference.</p>
+
+<h3>Deterministic scene assignment (train / test / color split)</h3>
+
+<p>$T$, $U$ and $Q$ are not chosen by hand — every downstream formula in this document depends on them, so their origin is a fixed, auditable procedure run <em>before</em> any rendering or inference, with no reference to embeddings:</p>
+
+<div class="eq-block small">
+  <div class="eq-row"><span class="eq-label">Train / test split</span>Sort all $s \in S$ by ascending <code>SHA256("gravity-minimal-v1|split|" + s)</code>. First 30 IDs &rarr; $T$ (train). Last 10 IDs &rarr; $U$ (test).</div>
+  <div class="eq-row" style="margin-top:16px;"><span class="eq-label">Color-control selection</span>Independently sort all $s \in S$ by ascending <code>SHA256("gravity-minimal-v1|color|" + s)</code>. First 20 IDs &rarr; $Q$ (color controls).</div>
+</div>
+
+<p class="note" style="margin-top:-4px;">Hash collisions are resolved by ascending scene ID. Both gravity clips of a scene always stay together in the same split. Color embeddings never enter the H3 transport fit. The realized test set is <code>U = [4, 22, 8, 39, 33, 10, 0, 1, 37, 24]</code>.</p>
+
+<p>Let $V_s^{B}$, $V_s^{L}$, $V_s^{C}$ denote the baseline, low-gravity and color videos for scene $s$; $V_s^{C}$ exists only for $s \in Q$. Define the fixed sampling operator</p>
+
+<div class="eq-block">
+$$P(V) = \big(V[0],\, V[10],\, \dots,\, V[150]\big)$$
+</div>
+
+<p>for each 151-frame, 30&nbsp;FPS video — these 16 frames cover times 0 to 5 seconds. Let $F$ be the frozen encoder's final normalized token output. With $N = 4608$ and $d = 768$, define:</p>
+
+<div class="eq-block">
+  <div class="eq-row">$$Z_s^{a} = F\big(P(V_s^{a})\big) \in \mathbb{R}^{N \times d}$$</div>
+  <div class="eq-row">$$z_s^{a} = \frac{1}{N}\sum_{n=1}^{N} Z_s^{a}[n,:] \in \mathbb{R}^{d}, \qquad a \in \{B, L, C\}$$</div>
+  <div class="eq-row">$$g_s = z_s^{L} - z_s^{B}, \qquad s \in S$$</div>
+  <div class="eq-row">$$c_s = z_s^{C} - z_s^{B}, \qquad s \in Q$$</div>
+</div>
+
+<p>The physical intervention sign is always <strong>low gravity minus baseline gravity</strong>. The appearance sign is always <strong>changed color minus baseline color</strong>. Mean pooling precedes differencing; no embedding centering or normalization is inserted. Embeddings are stored in float32 and cast to float64 for the calculations below.</p>
+
+<p>For nonzero $a, b \in \mathbb{R}^{d}$:</p>
+
+<div class="eq-block">
+  <div class="eq-row">$$\langle a,b \rangle = \sum_{j=1}^{d} a_j b_j$$</div>
+  <div class="eq-row">$$\lVert a \rVert_2 = \sqrt{\sum_{j=1}^{d} a_j^2}$$</div>
+  <div class="eq-row">$$\cos(a,b) = \frac{\langle a,b \rangle}{\lVert a \rVert_2 \, \lVert b \rVert_2}$$</div>
+</div>
+
+<div class="warn">
+  <span class="warn-title">Undefined-value rule</span>
+  A vector with norm $\le 10^{-12}$ has an <em>undefined</em> cosine in this protocol. Its ID and magnitude are recorded — its cosine is never replaced with zero, never nudged with an epsilon, and never silently dropped. Only the affected hypothesis is marked unevaluable; all other valid data and calculations stand. All gravity/color vector norms are recorded as diagnostics, not as an additional hypothesis.
+</div>
+
+<h2 id="h1"><span class="num">2</span>H1 — Gravity&ndash;gravity alignment</h2>
+
+<div class="hyp-box">
+  <span class="hyp-tag">Hypothesis H1 — directional consistency (Document 1)</span>
+  Gravity intervention vectors tend to align across scenes. Primary quantity: the mean cosine of the 780 distinct gravity-vector pairs. Positive values support positive average alignment; zero or negative values do not. The full distribution must accompany the mean — the sign alone is never read in isolation.
+</div>
+
+<p>The diagonal of the cosine matrix equals one by construction and is excluded from every summary below.</p>
+
+<div class="eq-block">
+  <div class="eq-row"><span class="eq-label">Gravity cosine matrix</span>$$G_{st} = \cos(g_s,\, g_t), \qquad G \in \mathbb{R}^{40 \times 40}$$</div>
+  <div class="eq-row" style="margin-top:16px;"><span class="eq-label">Distinct pairs</span>$$\mathcal{P} = \{(s,t) : 0 \le s < t \le 39\}, \qquad |\mathcal{P}| = \tfrac{40 \cdot 39}{2} = 780$$</div>
+  <div class="eq-row"><span class="eq-label">Primary H1 quantity</span>$$A = \frac{1}{780}\sum_{(s,t) \in \mathcal{P}} G_{st}$$</div>
+  <div class="eq-row"><span class="eq-label">Per-scene mean alignment</span>$$a_s = \frac{1}{39}\sum_{t \in S,\, t \ne s} G_{st}$$</div>
+</div>
+
+<p>Report the 780 values' mean, median, population standard deviation $\sqrt{\text{mean}\big((x-\overline{x})^2\big)}$, min and max; also store all 40 values of $a_s$ — $a_s$ feeds directly into the H2 contrast $\delta_k$ below.</p>
+
+<div class="check-box">
+  <span class="check-tag">Checking the result</span>
+  <ul>
+    <li>$A > 0$ &rarr; supports H1 (positive average alignment).</li>
+    <li>$A \le 0$ &rarr; does not support H1.</li>
+    <li>The sign of $A$ is never reported alone — the full 780-value spread (mean, median, SD, min, max) must accompany it, since a small positive mean next to a huge spread is weak evidence.</li>
+    <li>This is descriptive only: no p-value or confidence interval is computed for $A$ (see <a href="#scope">Combined claim &amp; statistical scope</a>).</li>
+  </ul>
+</div>
+
+<h2 id="h2"><span class="num">3</span>H2 — Gravity&ndash;color comparison</h2>
+
+<div class="hyp-box">
+  <span class="hyp-tag">Hypothesis H2 — relative appearance specificity (Document 1)</span>
+  A scene's gravity vector aligns more with other scenes' gravity vectors than with its own color vector. Primary quantity: the mean of 20 within-scene contrast scores, $D$. Positive values support this specific comparison; nonpositive values do not. This tests one color change (orange&rarr;blue at fixed gravity), not all possible appearance transformations.
+</div>
+
+<p>Order $Q$ numerically as $q_0, \dots, q_{19}$. Define $C \in \mathbb{R}^{40 \times 20}$:</p>
+
+<div class="eq-block">
+  <div class="eq-row"><span class="eq-label">Cross matrix</span>$$C_{sk} = \cos\big(g_s,\, c_{q_k}\big)$$</div>
+  <div class="eq-row"><span class="eq-label">Same-scene comparison</span>$$m_k = C_{q_k,\,k}$$</div>
+  <div class="eq-row"><span class="eq-label">Within-scene contrast</span>$$\delta_k = a_{q_k} - m_k$$</div>
+  <div class="eq-row"><span class="eq-label">Primary H2 quantity</span>$$D = \frac{1}{20}\sum_{k=0}^{19} \delta_k$$</div>
+</div>
+
+<p>$D > 0$ means each controlled scene's gravity vector is, on average, better aligned with gravity changes elsewhere than with that same scene's own appearance change.</p>
+
+<p>Report all 20 matched cosines $m_k$, all 20 contrasts $\delta_k$, $D$, and the mean/median/population-SD/min/max of the matched cosines. Save the full 800-entry cross matrix and its descriptive summaries as secondary context — the matched primary comparison is never swapped for whichever cross-matrix statistic looks more favorable. The 800 cross-pairs and the 780 gravity pairs reuse the same underlying vectors and are <strong>not independent samples</strong>.</p>
+
+<div class="note">A color cosine near zero is orthogonality in this representation, not proof of causal independence. A negative value is an oppositely directed change, not simply "more specific." Color and gravity vectors also share a baseline embedding — this dependence is acknowledged, not hidden.</div>
+
+<div class="check-box">
+  <span class="check-tag">Checking the result</span>
+  <ul>
+    <li>$D > 0$ &rarr; supports H2 for this specific color control.</li>
+    <li>$D \le 0$ &rarr; does not support H2.</li>
+    <li>Report all 20 matched cosines $m_k$ and contrasts $\delta_k$ alongside $D$, plus the full 800-entry cross matrix as secondary context only.</li>
+    <li>The matched primary comparison is never swapped for a more favorable cross-matrix statistic after the fact.</li>
+  </ul>
+</div>
+
+<h2 id="h3"><span class="num">4</span>H3 — 30-train / 10-test transport</h2>
+
+<div class="hyp-box">
+  <span class="hyp-tag">Hypothesis H3 — held-out transport (Document 1)</span>
+  Adding the mean training gravity vector improves prediction of held-out low-gravity embeddings over leaving the baseline embedding unchanged. Primary quantity: normalized transport error $R$. $R<1$ supports aggregate improvement; $R \ge 1$ does not. Per-scene errors show whether improvement is widespread or concentrated in a few scenes.
+</div>
+
+<p>The only fitted object is the mean training displacement:</p>
+
+<div class="eq-block">
+  <div class="eq-row"><span class="eq-label">Fitted training displacement</span>$$d_T = \frac{1}{30}\sum_{s \in T} g_s$$</div>
+  <div class="eq-row"><span class="eq-label">Held-out prediction</span>$$\hat{z}_s^{L} = z_s^{B} + d_T, \qquad s \in U$$</div>
+</div>
+
+<p>No regression, learned scale, intercept, whitening, unit-vector averaging, target normalization, or test-set calibration is applied — this estimates both direction and step size directly from the raw training displacements. "Train" here means estimating this one mean vector, not updating any V-JEPA weight.</p>
+
+<p>For each held-out scene:</p>
+
+<div class="eq-block small">
+  <div class="eq-row"><span class="eq-label">No-transport (identity) error</span>$$e_{0,s} = \lVert z_s^{B} - z_s^{L} \rVert_2 = \lVert g_s \rVert_2$$</div>
+  <div class="eq-row"><span class="eq-label">Transport error</span>$$e_{1,s} = \lVert \hat{z}_s^{L} - z_s^{L} \rVert_2 = \lVert d_T - g_s \rVert_2$$</div>
+  <div class="eq-row"><span class="eq-label">Individual error ratio</span>$$r_s = \frac{e_{1,s}}{e_{0,s}}$$</div>
+  <div class="eq-row"><span class="eq-label">Held-out direction alignment</span>$$h_s = \cos(d_T, g_s)$$</div>
+</div>
+
+<p>Aggregate quantities:</p>
+
+<div class="eq-block small">
+  <div class="eq-row">$$\mathrm{RMSE}_0 = \sqrt{\frac{1}{10}\sum_{s \in U} e_{0,s}^{2}}$$</div>
+  <div class="eq-row">$$\mathrm{RMSE}_1 = \sqrt{\frac{1}{10}\sum_{s \in U} e_{1,s}^{2}}$$</div>
+  <div class="eq-row"><span class="eq-label">Primary H3 quantity</span>$$R = \frac{\mathrm{RMSE}_1}{\mathrm{RMSE}_0}$$</div>
+  <div class="eq-row">$$\text{improvement} = 1 - R$$</div>
+  <div class="eq-row">$$f = \frac{1}{10}\sum_{s \in U} \mathbb{1}\big[e_{1,s} < e_{0,s}\big]$$</div>
+  <div class="eq-row">$$H = \frac{1}{10}\sum_{s \in U} h_s$$</div>
+</div>
+
+<table>
+  <tr><th>Value of $R$</th><th>Interpretation</th></tr>
+  <tr><td>$R < 1$</td><td>Aggregate improvement — transported prediction beats the naive baseline</td></tr>
+  <tr><td>$R = 1$</td><td>No aggregate improvement</td></tr>
+  <tr><td>$R > 1$</td><td>Transport is worse than doing nothing</td></tr>
+  <tr><td>$R = 0$</td><td>Perfect prediction</td></tr>
+</table>
+
+<p>Report $R$, both RMSEs, $f$, $H$, $\lVert d_T \rVert_2$, and all ten rows of $e_0, e_1, r, h$. $R$ is never confused with the mean of the individual ratios $r_s$, and Euclidean errors are never called squared errors.</p>
+
+<div class="warn">
+  <span class="warn-title">Undefined cases</span>
+  If $e_{0,s} \le 10^{-12}$, then $r_s$ is undefined and must be marked accordingly. If $\lVert d_T \rVert_2 \le 10^{-12}$, directional cosines $h_s$ are undefined, although the additive predictions and absolute errors still exist. If $\mathrm{RMSE}_0 \le 10^{-12}$, $R$ is undefined and H3 cannot be evaluated as planned. No replacement split is allowed in any of these cases.
+</div>
+
+<div class="check-box">
+  <span class="check-tag">Checking the result</span>
+  <ul>
+    <li>$R < 1$ &rarr; supports H3 (aggregate improvement over the naive baseline).</li>
+    <li>$R \ge 1$ &rarr; does not support H3.</li>
+    <li>Read $f$ (fraction of the 10 held-out scenes individually improved) and $H$ (mean held-out alignment with $d_T$) alongside $R$ — a favorable $R$ driven by one or two scenes, with a low $f$, is a materially weaker result than broad improvement across most held-out scenes.</li>
+  </ul>
+</div>
+
+<h2 id="scope"><span class="num">5</span>Combined claim &amp; statistical scope</h2>
+
+<p>H1, H2 and H3 are three <strong>separate descriptive hypotheses</strong>, each checked against its own criterion above. A limited combined claim — <em>"average alignment, separation from this color control, and transport improvement in this fixed benchmark"</em> — only holds if <strong>all three</strong> meet their directional criteria. Mixed outcomes (for example, H1 and H3 support while H2 does not) are reported as mixed, never folded into a single verdict.</p>
+
+<div class="warn">
+  <span class="warn-title">This is not a significance test</span>
+  The 40 scenes are a designed grid, not an independent random sample from real videos. No confirmatory population p-values or confidence intervals are computed for $A$, $D$ or $R$. No threshold may be changed after seeing the embeddings, and no split, metric or condition may be revised because a result looked unfavorable. Small positive differences ($A$ or $D$ just above 0; $R$ just below 1) are weak evidence, not confirmation — crossing zero or crossing one is a descriptive threshold, not a statistical significance claim. This is a deliberately small initial experiment meant to characterize effect sizes and feasibility, not to confirm a population-level effect.
+</div>
+
+<h2 id="outputs"><span class="num">6</span>Expected outputs and plots</h2>
+
+<ol>
+  <li><strong>Embedding table</strong> — 100 rows &times; 768 values, with scene and condition identifiers and video hashes.</li>
+  <li><strong>Vector sets</strong> — gravity vectors ($40 \times 768$); color vectors ($20 \times 768$); gravity cosine matrix ($40 \times 40$); gravity&ndash;color cosine matrix ($40 \times 20$).</li>
+  <li><strong>Matched-control table</strong> — scene ID, $a_s$, matched color cosine, $\delta$, and vector norms.</li>
+  <li><strong>Transport table</strong> — the ten scene IDs, $e_0, e_1, r, h$, plus a separately saved training mean and predicted embeddings.</li>
+  <li><strong>Summary JSON</strong> — $A$, $D$, $R$, and all prespecified descriptive summaries, with undefined quantities explicitly represented and explained.</li>
+  <li><strong>Gravity heatmap</strong> — fixed color scale $[-1,1]$, all scene IDs, diagonal shown but excluded from statistics.</li>
+  <li><strong>Gravity&ndash;color heatmap</strong> — fixed scale $[-1,1]$, rows and columns labeled by their actual scene IDs.</li>
+  <li><strong>Cosine histogram</strong> — 30 equal bins with edges $-1 + \tfrac{2k}{30}$ for $k = 0,\dots,30$; separately normalized densities for the 780 gravity pairs and the 20 matched color pairs, noting unequal sample counts and dependence.</li>
+  <li><strong>Matched contrast plot</strong> — 20 $\delta$ values against scene ID with a zero line.</li>
+  <li><strong>Transport plot</strong> — paired $e_0$/$e_1$ bars for each test ID, annotated with the aggregate $R$. No error bars implying independent pair sampling.</li>
+</ol>
+
+<div class="note">Cosines are clamped to $[-1,1]$ only for tiny floating-point boundary overshoot, and only after verifying the excess is $< 10^{-10}$ — a larger excess is treated as an implementation error, not a clamp. Original unclamped values are kept in the audit data.</div>
+
+<h2 id="integrity"><span class="num">7</span>Integrity checks</h2>
+
+<p>Before trusting any experimental number, the implementation verifies: sample counts and unique IDs; disjoint train/test sets; matching physical metadata; exact RGB round-trip; finite $[4608,768]$ token arrays and finite 768-vectors; expected cosine symmetry and diagonal within $10^{-10}$; and the identities $e_1 = \lVert d_T - g_s \rVert$ and $e_0 = \lVert g_s \rVert$. The analysis code is validated on small, hand-computable vectors <em>before</em> it ever touches experimental embeddings — these software checks are not additional experimental conditions.</p>
+
+<p>$d_T$ is computed using only the recorded $T$ IDs and saved before any test metric is produced, then recomputed from the saved training vectors to verify provenance. If any implementation defect is discovered after inference, the defect, the correction and the affected outputs are all documented. A scientific design choice is never silently changed to improve results.</p>
+
+<h2 id="appendix"><span class="num">§</span>Appendix — stimulus-generation equations</h2>
+
+<p>Everything above analyzes embeddings <em>after</em> the 100 clips exist. These equations generate the clips themselves (Document 1). They are a different category — rendering physics, not representation analysis — but are included here so every calculation in the experiment lives in one place.</p>
+
+<div class="eq-block small">
+  <div class="eq-row"><span class="eq-label">Scene grid (i = 0..7, j = 0..4)</span>$$s = 8j + i, \qquad x_{0,s} = -70 + 10i \text{ m}, \qquad y_{0,s} = 140 + 5j \text{ m}$$</div>
+  <div class="eq-row" style="margin-top:16px;"><span class="eq-label">Ballistic trajectory, t &isin; [0, 5] s, with $v_x{=}15$, $v_{y0}{=}10$</span>$$x_s(t) = x_{0,s} + 15t, \qquad y_{s,g}(t) = y_{0,s} + 10t - \tfrac{g}{2}t^2$$</div>
+  <div class="eq-row" style="margin-top:16px;"><span class="eq-label">Camera projection (world &rarr; 384&times;384 px)</span>$$u = 1.92(x + 100), \qquad v = 1.92(200 - y), \qquad r_{\text{px}} = 9.6$$</div>
+</div>
+
+<p class="note"><strong>design_revision <code>ballistic-launch-v3</code>:</strong> the original $v_x{=}2$, $v_{y0}{=}0$ setup (near-vertical horizontal launch) visually read as a weak, unresolved drop. The ball now launches at an angle ($v_{y0}{=}10$ m/s upward), giving a standard rise-then-fall ballistic parabola instead. The $x_0$ grid spacing tightened from 20&nbsp;m to 10&nbsp;m to keep the larger horizontal travel (75&nbsp;m over 5s, up from 10&nbsp;m) inside the world. World $x \in [-100,100]$ m, $y \in [0,200]$ m; ball radius $r=5$ m. Numerically verified in-bounds for all 40 scenes at both $g=9.8$ and $g=4.9$: $x \in [-70,75]$, $y \in [67.5,170.2]$ (margins $x\in(-95,95)$, $y\in(5,195)$). Background RGB $(32,32,32)$, grid RGB $(44,44,44)$. Orange $(235,100,60)$ for both gravity conditions; blue $(60,140,235)$ for the 20 color controls. Full derivation and the deterministic split algorithm are in <code>01_EXPERIMENT_DESIGN.md</code>.</p>
+
+<footer>
+  Minimal gravity latent experiment &middot; Merges Documents 1 &amp; 2 &middot; Sources: <code>01_EXPERIMENT_DESIGN.md</code>, <code>02_MATHEMATICAL_PLAN.md</code> &middot; Content unchanged from the originals — only reorganized, labeled and typeset for readability.
+</footer>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+
+  (function() {
+    var btn = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    try {
+      var saved = localStorage.getItem('gravity-doc-theme');
+      if (saved) root.setAttribute('data-theme', saved);
+    } catch (e) {}
+    btn.addEventListener('click', function() {
+      var current = root.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('gravity-doc-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+848a77c33cc9e6649ed2119c9bea1e2c569bcdab9539ff3e7c02ccc2959ddf4d *checkpoints/vjepa2_1_vitb_dist_vitG_384.pt
