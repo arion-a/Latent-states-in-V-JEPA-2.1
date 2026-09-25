@@ -95,6 +95,7 @@
   <ol>
     <li><a href="#headline">Headline result</a></li>
     <li><a href="#control">Control-model baseline</a></li>
+    <li><a href="#perspective">Putting this in perspective</a></li>
     <li><a href="#method">Methodology</a></li>
     <li><a href="#h1">H1 — gravity–gravity alignment</a></li>
     <li><a href="#h2">H2 — gravity vs. color specificity</a></li>
@@ -143,7 +144,26 @@
 
 <div class="note">This does not extend the claim beyond what's stated in §1 — still one checkpoint, one renderer, no causal disentanglement from trajectory shape (see <a href="#limitations">Limitations</a>). It addresses a <em>different</em> question: whether the signal is specific to the trained model at all, or an artifact of the experimental setup. It is specific to the trained model.</div>
 
-<h2 id="method"><span class="num">3</span>Methodology</h2>
+<h2 id="perspective"><span class="num">3</span>Putting this in perspective — what it says about V-JEPA's claims</h2>
+
+<p>V-JEPA's central architectural bet — restated in the V-JEPA2 paper's own title, <em>"Self-Supervised Video Models Enable Understanding, Prediction and Planning"</em> — is that training a model to predict in <strong>latent space</strong>, rather than reconstructing pixels, forces it to discard irrelevant texture/noise and retain the physically/semantically meaningful structure of a scene, without labels. This experiment's numbers map onto three separable pieces of that claim, plus one check on what actually produced them.</p>
+
+<table>
+  <tr><th>Claim component</th><th>What would support it</th><th>Our number</th><th>Verdict</th></tr>
+  <tr><td>Latent space organizes a physical variable as a shared, reusable direction — not scene-specific noise</td><td>Consistent cosine alignment across independent scenes</td><td>A = 0.635 over 780 pairs, only 1 negative</td><td><span class="pass">Supports</span> — real abstraction, not a perfectly crisp single axis</td></tr>
+  <tr><td>That structure is specific to the physical intervention, not "any embedding difference looks similar"</td><td>Near-zero alignment with an unrelated (appearance) intervention</td><td>Matched color cosines mean ≈ 0.029 (near-orthogonal); D = 0.598</td><td><span class="pass">Supports</span> — space partially factorizes physical vs. appearance change</td></tr>
+  <tr><td>Structure is usable for generalizable prediction, not just descriptive of training scenes</td><td>A direction fit on some scenes correctly predicts the shift in unseen ones</td><td>R = 0.601 (39.9% RMSE reduction), f = 1.0 (10/10 improved)</td><td><span class="pass">Supports</span> — closest of the three to a literal "predictive" claim</td></tr>
+  <tr><td>This is a property of V-JEPA2's <em>training</em>, not just architecture or trivial pixel geometry</td><td>Signal disappears when weights are untrained or the model is removed</td><td>Random-weight: A≈0, D≈0, R≈1. Pixel-stats: same collapse</td><td><span class="pass">Supports</span> — ties the effect to the learned objective specifically</td></tr>
+</table>
+
+<div class="warn">
+  <span class="warn-title">What this does not test</span>
+  V-JEPA2's own headline "prediction and planning" results (robot-arm planning, next-state forecasting) exercise a <em>different</em> component: the trained <strong>predictor</strong> network, which forecasts masked/future latent states from partial context. This experiment only ever ran the frozen <strong>encoder</strong> on complete, already-rendered clips — the predictor module was never invoked. This result is evidence the encoder learns a structured, physically-relevant, generalizable representation — a <em>necessary precondition</em> for the predictor to have something useful to forecast — not a direct replication of the forward-simulation/planning claim itself.
+</div>
+
+<p><strong>Reading the magnitudes honestly.</strong> None of these numbers are saturated. A=0.635 and D=0.598 sit well below the 1.0 ceiling — there is real per-scene variability, not one perfectly crisp shared axis. R=0.601 still leaves substantial residual error (RMSE₁=0.419, not 0) — a 40% reduction, not a solved prediction problem. The honest summary: this encoder's latent space is <strong>usefully and non-trivially structured</strong> around this physical variable — not <strong>perfectly or deterministically</strong> so — and that structure demonstrably required V-JEPA2's actual pretraining, not just its architecture.</p>
+
+<h2 id="method"><span class="num">4</span>Methodology</h2>
 
 <p>40 scenes, each a ball launched on a ballistic trajectory (<code>x(t)=x0+15t</code>, <code>y(t)=y0+10t&minus;0.5&middot;g&middot;t²</code>), rendered twice — once at g=9.8 m/s², once at g=4.9 m/s² — with every other pixel-level factor (position, velocity, color, camera, background) held fixed. 20 of those 40 scenes additionally get a color-control clip (orange→blue ball, gravity fixed at 9.8). 100 videos total, each 151 frames @ 30 FPS (5 seconds), rendered as lossless FFV1.</p>
 
@@ -151,7 +171,7 @@
 
 <p>Executed on a RunPod RTX 3090: render 68s, extract 49s, analyze &lt;1s — full 100-clip pipeline in <strong>~2 minutes</strong> of compute. The two control baselines added ~3 minutes more (random-weight forward passes + trivial pixel stats).</p>
 
-<h2 id="h1"><span class="num">4</span>H1 — gravity&ndash;gravity alignment</h2>
+<h2 id="h1"><span class="num">5</span>H1 — gravity&ndash;gravity alignment</h2>
 
 <p><strong>A = 0.634761</strong>, computed over all 780 distinct scene pairs (the full design count).</p>
 
@@ -171,7 +191,7 @@
   <div class="figure-caption">Fig. 1 — 40×40 gravity–gravity cosine matrix, fixed scale [&minus;1,1]. Diagonal shown but excluded from statistics.</div>
 </div>
 
-<h2 id="h2"><span class="num">5</span>H2 — gravity vs. color specificity</h2>
+<h2 id="h2"><span class="num">6</span>H2 — gravity vs. color specificity</h2>
 
 <p><strong>D = 0.598393</strong>, the mean of 20 within-scene contrasts <code>δ_k = a_qk &minus; m_k</code>.</p>
 
@@ -199,7 +219,7 @@
   <div class="figure-caption">Fig. 4 — All 20 within-scene contrasts δ_k. Every bar is positive.</div>
 </div>
 
-<h2 id="h3"><span class="num">6</span>H3 — 30-train / 10-test transport</h2>
+<h2 id="h3"><span class="num">7</span>H3 — 30-train / 10-test transport</h2>
 
 <p><strong>R = 0.600966</strong> (RMSE₁/RMSE₀), on the full 30-train/10-test split fixed before any inference by SHA-256 deterministic assignment.</p>
 
@@ -234,15 +254,15 @@
 
 <p>No held-out failures: no undefined ratios, ‖d_T‖ and RMSE₀ both well above the 1e-12 undefined threshold — H3 was fully evaluable with no unevaluable cases.</p>
 
-<h2 id="combined"><span class="num">7</span>Combined claim</h2>
+<h2 id="combined"><span class="num">8</span>Combined claim</h2>
 
 <p>H1, H2, and H3 are three separate descriptive hypotheses; all three independently met their directional criteria, so the limited combined claim in §1 holds. Had any one failed, this would be reported as a mixed outcome, not folded into a single verdict — that didn't happen here, but the rule is stated because it's the rule that would have applied.</p>
 
-<h2 id="deviations"><span class="num">8</span>Implementation deviations</h2>
+<h2 id="deviations"><span class="num">9</span>Implementation deviations</h2>
 
 <p>One deviation, made <em>before</em> execution and fully documented in <code>design/01_EXPERIMENT_DESIGN.md</code> and <code>scene_plan.json</code> (<code>design_revision: ballistic-launch-v3</code>): the initial physics draft (<code>vx=2, vy0=0</code>) produced a visually weak, near-vertical drop rather than a recognizable projectile arc. This was replaced with a proper ballistic launch (<code>vx=15, vy0=10</code>) before any rendering or inference — verified numerically in-bounds for all 40 scenes × both gravity values × all 151 frames before use. No other deviation occurred: the executed pipeline matches the frozen math plan exactly.</p>
 
-<h2 id="limitations"><span class="num">9</span>Limitations</h2>
+<h2 id="limitations"><span class="num">10</span>Limitations</h2>
 
 <div class="warn">
   <span class="warn-title">Stated plainly, not buried</span>
@@ -255,7 +275,7 @@
   </ul>
 </div>
 
-<h2 id="repro"><span class="num">10</span>Reproduction &amp; links</h2>
+<h2 id="repro"><span class="num">11</span>Reproduction &amp; links</h2>
 
 <p>Full code, exact checkpoint hash, deterministic scene assignment, all 100 raw embeddings, both control-baseline embeddings, and every figure/table are on GitHub:</p>
 
