@@ -12,6 +12,20 @@
 
 All three hypotheses met their prespecified directional criteria. Per Document 01's own rule, this permits the **limited combined claim**: *"average alignment, separation from this color control, and transport improvement, in this fixed 40-scene benchmark, for this one checkpoint."* Nothing broader.
 
+## Control-model baseline (added post-hoc, same 100 videos, same analysis code)
+
+The obvious objection to the headline numbers: maybe *any* reasonable video representation would show this, simply because a gravity change alters the visible trajectory, and trajectory differences are a generically strong visual signal. To test that, the identical `analyze.py` (same 780 pairs, same 20 matched scenes, same 30/10 split) was run on two control representations of the exact same 100 clips:
+
+| | Trained V-JEPA2 (real result) | Random-weight V-JEPA2 (same architecture, untrained) | Pixel statistics (no model — per-frame RGB mean/std) |
+|---|---|---|---|
+| H1 — `A` | **0.6348** ✅ | −0.0038 (chance) ❌ | −0.0156 (chance) ❌ |
+| H2 — `D` | **0.5984** ✅ | −0.0613 ❌ | 0.0200 (noise) ❌ |
+| H3 — `R` | **0.6010** ✅ | 1.0175 (worse than baseline) ❌ | 1.0167 (worse than baseline) ❌ |
+
+Both controls collapse to chance (or worse) on every hypothesis. The random-weight architecture is the stronger control: it's the *exact same* ViT-B/16, patch embedding, mean-pooling, and cosine math as the real result — the only difference is whether the weights were ever pretrained. Its failure rules out "this is just a generic property of the architecture/geometry" as an explanation. The pixel-statistics baseline rules out "this is just a generic property of how the scene changes visually." Neither reproduces any part of the signal — the effect required actual V-JEPA2 pretraining.
+
+This doesn't extend the claim beyond what's stated above (still one checkpoint, one renderer, no causal disentanglement from trajectory shape) — it addresses a *different* question: whether the signal is specific to the trained model at all, versus an artifact of the experimental setup. It is specific to the trained model.
+
 ## Methodology (brief — full detail in `design/`)
 
 40 scenes, each a ball launched on a ballistic trajectory (`x(t)=x0+15t`, `y(t)=y0+10t-0.5·g·t²`), rendered twice — once at g=9.8 m/s², once at g=4.9 m/s² — with every other pixel-level factor (position, velocity, color, camera, background) held fixed. 20 of those 40 scenes additionally get a color-control clip (orange→blue ball, gravity fixed at 9.8). 100 videos total, each 151 frames @ 30 FPS (5s), rendered as lossless FFV1.

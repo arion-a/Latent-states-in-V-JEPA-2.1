@@ -16,6 +16,8 @@ A minimal, fully-controlled experiment testing whether a frozen, pretrained **V-
 
 Additional H3 detail: **f = 1.0** — all 10 held-out scenes individually improved under the learned displacement, not just a couple; **H = 0.806** — mean alignment between the learned direction and each held-out scene's true gravity vector. Full raw numbers, per-scene tables, and the exact math behind every quantity are in [`design/02_MATHEMATICAL_PLAN.md`](design/02_MATHEMATICAL_PLAN.md) and [`results/`](results/).
 
+**Control-model baseline.** Run the identical analysis on the identical 100 videos through (a) the same ViT-B/16 architecture with random, untrained weights, and (b) a trivial pixel-statistics feature (no model at all). Both collapse to chance on every hypothesis (A≈0, D≈0, R≥1) — the signal above required actual V-JEPA2 pretraining, not just the architecture or the fact that trajectories differ. See [`REPORT.md`](REPORT.md#control-model-baseline-added-post-hoc-same-100-videos-same-analysis-code) for the full comparison table.
+
 ## What this tests, precisely
 
 For 40 synthetic scenes (a ball launched on a ballistic trajectory), each scene is rendered twice — once at Earth gravity (9.8 m/s²), once at Mars-like gravity (4.9 m/s²) — with *everything else pixel-identical*: same start position, same launch velocity, same ball color, same camera, same background. 20 of those scenes also get a third clip where only the ball's color changes (orange → blue), gravity held fixed, as a control.
